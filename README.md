@@ -125,7 +125,10 @@ This project seeks **kernel developers**, **hardware enthusiasts**, **educationa
 - Keijser, J.J. (2024). Adapting MPSS for CentOS 8. GitHub Repository: [https://github.com/jjkeijser/mpss](https://github.com/jjkeijser/mpss)
 - AlmaLinux 9 Release Notes: [https://wiki.almalinux.org/release-notes/9.0.html](https://wiki.almalinux.org/release-notes/9.0.html)
 
----
+## Annotated Bibliography
+
+- Porth, C. (2022). mpss-modules: Intel Xeon Phi Coprocessor (MPSS) Kernel Modules. GitHub repository. Retrieved from https://github.com/charlieporth1/mpss-modules 
+Summary: This repository contains the kernel modules necessary to enable support for Intel Xeon Phi coprocessors (such as the 5110P) within the Linux kernel 5.4. It focuses on the out-of-tree build of SCIF, MIC, and related drivers, making it possible to run MPSS on newer distributions where official support has long ceased.
 
 ## Repository Structure (Planned)
 
