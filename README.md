@@ -1,14 +1,14 @@
 # Proposal: Developing Xeon Phi 5110P Support for AlmaLinux 9 (Kernel 5.14)
 
-## Introduction
+**Introduction**
 
-This proposal aims to establish the foundation for developing **full support for the Intel Xeon Phi 5110P coprocessor** on **AlmaLinux 9**, specifically targeting **kernel 5.14** and related updates in the **EL9 ecosystem**. By building a **modern, community-maintained kernel module** (`mic.ko`) and updating essential user-space utilities, this project will ensure that aging Xeon Phi hardware can regain relevance for **AI inference**, **parallel processing**, and **scientific computing** — with a special focus on **affordable AI infrastructure for educational institutions**.
+This proposal outlines an initiative to fully support the Intel Xeon Phi 5110P coprocessor on AlmaLinux 9 by targeting kernel version 5.14. Historically, community patches—most notably for kernel 5.4—have enabled limited functionality of the Xeon Phi 5110P by bridging compatibility gaps, especially in key areas like the Symmetric Communication Interface (SCIF). However, AlmaLinux 9’s kernel 5.14 introduces substantial changes to driver APIs, system interfaces, and network management (with deprecated tools like network-scripts), necessitating a fresh, comprehensive solution. Our goal is to develop a modern, community-maintained kernel module (mic.ko) and update the associated user-space utilities, thereby ensuring that legacy Xeon Phi hardware remains a viable asset for high-performance computing tasks such as AI inference, parallel processing, and scientific simulations.
 
-This repository (once published) will become the **central hub** for development efforts, documentation, and collaboration.
+**Background and Justification**
 
----
+The Intel Xeon Phi 5110P, built on Intel’s Many Integrated Core (MIC) architecture, was originally designed to offer high parallel processing capabilities at an affordable price point. Despite its discontinuation by Intel, the hardware still holds significant potential for academic and research applications—particularly in regions where budget constraints limit access to modern AI infrastructure. Early community efforts have produced patches for older kernels (e.g., kernel 5.4) that restore basic functionality, but these solutions do not translate directly to the newer, more secure, and performance-optimized environment provided by AlmaLinux 9’s kernel 5.14. 
 
-## Background and Justification
+Key challenges include the need for extensive rework of the SCIF drivers to align with updated kernel internals, overhauling PCIe device handling routines, and replacing deprecated network configuration tools with modern alternatives like NetworkManager. Addressing these issues is critical to ensure that the Xeon Phi 5110P can continue to deliver its exceptional parallel processing capabilities. Moreover, by revitalizing support for this legacy hardware, the project will empower educational institutions with a cost-effective computing solution, enhancing research opportunities in AI and scientific computing without the need for substantial financial investment.
 
 ### Discontinued Hardware with Untapped Potential
 The **Intel Xeon Phi 5110P**, part of Intel’s now-discontinued **Many Integrated Core (MIC)** architecture, provided exceptional parallel processing power at relatively low cost. However, official support for this hardware ended years ago, and **modern distributions like AlmaLinux 9 (kernel 5.14)** no longer ship compatible drivers or the necessary **Manycore Platform Software Stack (MPSS)**.
