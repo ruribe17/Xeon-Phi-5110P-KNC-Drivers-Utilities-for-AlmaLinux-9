@@ -1,233 +1,165 @@
-### Reviving Xeon Phi 5110P for AI & HPC on Modern Linux Distributions
-![image](https://github.com/user-attachments/assets/86a4ec63-80c9-4bd2-a853-65fa5d1c69e6)
-In Lima, Peru's basic education sector, there is a growing demand for cost-effective AI solutions to support personalized learning, automated assessments, and intelligent tutoring systems. However, deploying AI models, such as 7B and 14B parameter models, requires substantial computational resources, often beyond the financial reach of institutions with limited budgets.
+Absolutely! Here’s a **formal proposal** tailored for publication on **GitHub** — designed to be **persuasive**, **informative**, and to attract interest from developers, educational institutions, and open-source enthusiasts. This version is suitable as a **README.md** or **project proposal document** to kick off a GitHub repository:
 
-The Intel Xeon Phi 5110P offers a potential low-cost alternative for AI workloads due to its high parallel computing capabilities. However, its adoption on modern operating systems, such as AlmaLinux 8.10 (AlmaLinux, 2025), is hindered by the lack of readily available drivers and utilities. Since Intel has discontinued support for the Xeon Phi architecture, newer Linux distributions no longer include the necessary software components to fully utilize these coprocessors.
+---
 
-This challenge limits educators and developers from repurposing existing Xeon Phi hardware for AI inference and training. Addressing this issue requires developing or adapting driver support and utilities to ensure full compatibility with AlmaLinux 8.10. This effort would enable low-budget institutions to leverage older hardware for AI-based educational tools, fostering technological inclusion and innovation in Lima’s education sector.
+# Proposal: Developing Xeon Phi 5110P Support for AlmaLinux 9 (Kernel 5.14)
 
-This research explores the feasibility of recompiling Xeon Phi 5110P drivers on AlmaLinux 8.10 to support AI workloads in Lima’s educational sector. AlmaLinux 8.10 is chosen for its long-term support until 2029, binary compatibility with RHEL, and stability, making it a practical solution for overcoming the absence of official drivers. Ensuring compatibility with modern AI frameworks would provide low-cost, scalable computing resources, allowing educational institutions to maximize their existing hardware investments for AI-powered learning solutions.
+## Introduction
 
-**Literature Review**
+This proposal aims to establish the foundation for developing **full support for the Intel Xeon Phi 5110P coprocessor** on **AlmaLinux 9**, specifically targeting **kernel 5.14** and related updates in the **EL9 ecosystem**. By building a **modern, community-maintained kernel module** (`mic.ko`) and updating essential user-space utilities, this project will ensure that aging Xeon Phi hardware can regain relevance for **AI inference**, **parallel processing**, and **scientific computing** — with a special focus on **affordable AI infrastructure for educational institutions**.
 
-Keijser (2024) provides a comprehensive guide on implementing the Manycore Platform Software Stack (MPSS) for the Xeon Phi on CentOS 8, addressing compatibility and configuration challenges in modern operating systems. This study builds upon Keijser’s work by adapting it for AlmaLinux 8.1, leveraging its binary compatibility with RHEL and extended support. The methodology outlined in Keijser (2024) has served as a critical reference for adapting MPSS software in AlmaLinux, ensuring a functional solution for educational environments in Peru.
+This repository (once published) will become the **central hub** for development efforts, documentation, and collaboration.
 
-**Installing the mic.ko Module on AlmaLinux 8.10** 
+---
 
-First, you may choose to use the precompiled module provided on GitHub. If you prefer or require a custom build, ensure to follow the instructions for compiling the module yourself, particularly if your kernel version differs. After successfully building the module, proceed with installing the newly compiled kernel module.
+## Background and Justification
 
-   **Step 1: Installing the Compiled Module**  
+### Discontinued Hardware with Untapped Potential
+The **Intel Xeon Phi 5110P**, part of Intel’s now-discontinued **Many Integrated Core (MIC)** architecture, provided exceptional parallel processing power at relatively low cost. However, official support for this hardware ended years ago, and **modern distributions like AlmaLinux 9 (kernel 5.14)** no longer ship compatible drivers or the necessary **Manycore Platform Software Stack (MPSS)**.
 
-To install the precompiled module, use the following command:  
+### Educational Institutions Need Affordable AI Power
+In regions such as **Lima, Peru**, educational institutions often face **severe budget constraints**, limiting their access to modern **AI-capable infrastructure**. By reviving support for the Xeon Phi 5110P on contemporary Linux platforms, this project offers a **cost-effective path** to deploy AI tools for **personalized learning**, **automated grading**, and **intelligent tutoring systems**.
 
-```rpm -ivh https://github.com/ruribe17/Xeon-Phi-5110P-KNC-Drivers-Utilities-for-AlmaLinux-8.1/releases/download/v0.1.0-alpha/mpss-modules-4.18.0-553.40.1.el8_10.x86_64-3.8.6-8.x86_64.rpm```
+---
 
-This registers the `mic.ko` module with the system. Note: If your kernel version is different from the one mentioned here, you'll need to follow the steps in the next section to build the kernel module from source.
+## Target Operating System and Kernel Versions
 
-   **Step 2: Creating a Symbolic Link for mic.ko**  
+This project will **target the following environment:**
 
-Navigate to the kernel module directory and create a symbolic link to the `mic.ko` module:  
+| Distribution | Kernel Version | Status |
+|---|---|---|
+| AlmaLinux 9 | 5.14.x | Primary Target |
+| Rocky Linux 9 | 5.14.x | Secondary Target (Compatibility) |
+| RHEL 9 (upstream reference) | 5.14.x | Reference Only |
 
-```
-cd /lib/modules/4.18.0-553.40.1.el8_10.x86_64/weak-updates/
-ln -s /lib/modules/4.18.0-553.40.1.el8_10.x86_64/extra/mic.ko ./mic.ko
-```
+The project will follow **AlmaLinux 9’s lifecycle**, ensuring long-term compatibility until **2032**.
 
-This ensures the system recognizes the module in the correct location.  
+---
 
-   **Step 3: Loading and Verifying the Module**  
+## Objectives
 
-Finally, load the `mic.ko` module into the kernel using:  
+### 1. Develop Modern Kernel Module (`mic.ko`)
+- Analyze the **MPSS 3.8.6 kernel module** (last working on CentOS 7/8 with kernel 3.10 and 4.18).
+- Refactor and adapt to support **kernel 5.14** and **modern device management interfaces**.
+- Package as an **RPM for easy deployment** on AlmaLinux 9.
 
-```modprobe mic```
+### 2. Update Essential User-Space Utilities
+- Port and test the following MPSS components for **EL9**:
+    - `libmicmgmt`
+    - `libscif`
+    - `mpss-daemon`
+    - `micctrl`, `micinfo`, `miccheck`
+- Replace deprecated libraries or features (e.g., Python 2 dependencies).
 
-To confirm that the module is successfully loaded, check with:  
+### 3. Publish Complete Documentation
+- Step-by-step installation and configuration guides.
+- Explanation of **kernel module compatibility challenges** and solutions.
+- Practical case studies for **AI inference**, **matrix computation**, or **parallel model training** on Xeon Phi.
 
-```lsmod | grep mic```
+---
 
-If the module is properly installed and loaded, you should see `mic` listed in the output.
+## Why Focus on AlmaLinux 9?
 
-   **Step 4: Installing Required Libraries and Daemon**
+✅ **RHEL-Compatible**: Direct compatibility with industry-standard RHEL clones, including **Rocky Linux** and **Oracle Linux**.  
+✅ **Long-Term Support**: Guaranteed updates until **2032**.  
+✅ **Community Driven**: Ideal platform for educational and research use.  
+✅ **Modern Kernel and Toolchain**: Ships with **kernel 5.14**, **GCC 11**, **glibc 2.34**, and **systemd 249** — all requiring compatibility work for legacy MPSS components.
 
-To run the MPSS daemon (mpss-daemon), you need to install its required dependencies. Ensure you have MPSS 3.8.6 installed, as it provides the necessary RPM packages. Install the required dependencies for running the MPSS daemon:
+---
 
-```
-rpm -ivh /mnt/centosroot/root/mpss-3.8.6/libscif0-3.8.6-1.glibc2.12.x86_64.rpm
-rpm -ivh /mnt/centosroot/root/mpss-3.8.6/libscif-dev-3.8.6-1.glibc2.12.x86_64.rpm
-rpm -ivh /mnt/centosroot/root/mpss-3.8.6/libscif-doc-3.8.6-1.glibc2.12.x86_64.rpm
-rpm -ivh mpss-daemon-3.8.6-4.el8.x86_64.rpm
-rpm -ivh https://github.com/ruribe17/Xeon-Phi-5110P-KNC-Drivers-Utilities-for-AlmaLinux-8.1/blob/main/mpss-daemon-3.8.6-4.el8.x86_64.rpm
-```
-**Step 5: MPSS 3.8.6 RPM Installation Order**
+## Strategic Impact
 
-1. Install `libmicmgmt0` package:
-   ```
-   rpm -ivh glibc2.12pkg-libmicmgmt0-3.8.6-1.glibc2.12.x86_64.rpm
-   ```
-2. Install `libmicmgmt` development and documentation packages:
-   ```
-   rpm -ivh glibc2.12pkg-libmicmgmt-doc-3.8.6-1.glibc2.12.x86_64.rpm glibc2.12pkg-libmicmgmt-dev-3.8.6-1.glibc2.12.x86_64.rpm
-   ```
-3. Install `mpss-miccheck-bin` package:
-   ```
-   rpm -ivh mpss-miccheck-bin-3.8.6-1.glibc2.12.x86_64.rpm
-   ```
-4. Create a symbolic link for Python:
-   ```
-   sudo ln -s /usr/bin/python3 /usr/bin/python
-   ```
-5. Install `libmicaccesssdk0` package:
-   ```
-   rpm -ivh glibc2.12pkg-libmicaccesssdk0-3.8.6-1.glibc2.12.x86_64.rpm
-   ```
-6. Install `libmicaccesssdk-dev` package:
-   ```
-   rpm -ivh glibc2.12pkg-libmicaccesssdk-dev-3.8.6-1.glibc2.12.x86_64.rpm
-   ```
-7. Install `libodmdebug0` and its development package:
-   ```
-   rpm -ivh glibc2.12pkg-libodmdebug0-3.8.6-1.glibc2.12.x86_64.rpm glibc2.12pkg-libodmdebug-dev-3.8.6-1.glibc2.12.x86_64.rpm
-   ```
-8. Install `libsettings0` and its development package:
-   ```
-   rpm -ivh glibc2.12pkg-libsettings0-3.8.6-1.glibc2.12.x86_64.rpm glibc2.12pkg-libsettings-dev-3.8.6-1.glibc2.12.x86_64.rpm
-   ```
-9. Install `mpss-flash`:
-   ```
-   rpm -ivh glibc2.12pkg-mpss-flash-3.8.6-1.glibc2.12.x86_64.rpm
-   ```
-10. Install kernel-related packages:
-    ```
-    rpm -ivh glibc2.12pkg-mpss-memdiag-kernel-3.8.6-1.glibc2.12.x86_64.rpm glibc2.12pkg-mpss-rasmm-kernel-3.8.6-1.glibc2.12.x86_64.rpm
-    ```
-11. Install `mpss-micmgmt` and its Python package:
-    ```
-    rpm -ivh mpss-micmgmt-3.8.6-1.glibc2.12.x86_64.rpm mpss-micmgmt-python-3.8.6-1.glibc2.12.x86_64.rpm
-    ```
-    - **Error Note:** Python compatibility issue detected (`SyntaxError: invalid syntax`). Ensure Python 2 compatibility or modify the script.
-12. Install `mpss-miccheck`:
-    ```
-    rpm -ivh mpss-miccheck-3.8.6-1.glibc2.12.x86_64.rpm
-    ```
-    - **Error Note:** Similar Python syntax error detected. Needs a fix.
-13. Install additional MPSS packages:
-    ```
-    rpm -ivh mpss-3.8.6/mpss-micmgmt-doc-3.8.6-1.glibc2.12.x86_64.rpm mpss-boot-files-3.8.6-1.glibc2.12.x86_64.rpm mpss-coi-3.8.6-1.glibc2.12.x86_64.rpm mpss-3.8.6/mpss-coi-doc-3.8.6-1.glibc2.12.x86_64.rpm mpss-coi-dev-3.8.6-1.glibc2.12.x86_64.rpm
-    ```
-14. Review compatibility of daemon and licensing packages before installation:
-    ```
-    rpm -ivh mpss-daemon-dev-3.8.6-1.glibc2.12.x86_64.rpm  # Check compatibility with mpss-daemon
-    rpm -ivh mpss-license-3.8.6-1.glibc2.12.x86_64.rpm      # Verify its function
-    ```
-15. Install GUI and module header packages:
-    ```
-    rpm -ivh mpss-micsmc-gui-3.8.6-1.glibc2.12.x86_64.rpm mpss-modules-headers-3.8.6-1.glibc2.12.x86_64.rpm  # Ensure it works with modified modules
-    ```
-16. Install remaining MPSS components:
-    ```
-    rpm -ivh mpss-mpm-3.8.6-1.glibc2.12.x86_64.rpm mpss-mpm-doc-3.8.6-1.glibc2.12.x86_64.rpm mpss-myo-3.8.6-1.glibc2.12.x86_64.rpm mpss-myo-dev-3.8.6-1.glibc2.12.x86_64.rpm mpss-myo-doc-3.8.6-1.glibc2.12.x86_64.rpm mpss-core-3.8.6-1.glibc2.12.x86_64.rpm
-    ```
+### For Educational Institutions
+- **Low-Cost AI Infrastructure**: Repurpose affordable or donated Xeon Phi hardware for AI workloads.
+- **Modern Security**: Run AI applications on a supported, patched OS with current security practices.
+- **Learning Platform**: Provides real-world case studies for **open hardware integration** into education.
 
-   **Step 6: Install Network Scripts**
+### For Open-Source Community
+- **Rescue Legacy Hardware**: Preserves the value of Xeon Phi hardware, aligning with **open hardware reuse** principles.
+- **Kernel Adaptation Blueprint**: Serves as a case study for adapting out-of-tree drivers to modern kernels.
+- **Collaborative Development**: Invites contributions from kernel developers, hardware enthusiasts, and educational technologists.
 
-Run the following command to install the necessary network scripts for configuring dynamic IP addresses:
+---
 
-```sudo dnf install network-scripts -y```
+## Technical Challenges
 
-This ensures that ifup and ifdown are available for setting the IPs.
+| Challenge | Description | Proposed Solution |
+|---|---|---|
+| Kernel API Changes | Many interfaces changed between **3.10 → 5.14** | Review upstream kernel commits and rewrite affected code. |
+| Systemd Integration | MPSS expects legacy init system | Convert all management to **systemd units**. |
+| Library Compatibility | Deprecated dependencies (Python 2, old glibc) | Patch for Python 3, rebuild with **glibc 2.34**. |
+| Device Enumeration | Kernel’s PCI device handling evolved | Use **modern PCI enumeration APIs**. |
 
-   **Step 7: Initialize Default Settings for Xeon Phi**
+---
 
-```micctrl --initdefaults```
+## Project Timeline (Tentative)
 
-Note: If you encounter the following error:
+| Phase | Duration | Deliverable |
+|---|---|---|
+| Initial Analysis | 4 weeks | Compatibility Report |
+| Kernel Module Porting | 8 weeks | mic.ko for 5.14 |
+| User-Space Porting | 6 weeks | Updated MPSS Utilities |
+| Packaging & Documentation | 4 weeks | RPMs + Full Docs |
+| Testing & Validation | 4 weeks | Real-World AI Workload Tests |
+| Community Outreach | Ongoing | Blog, Talks, Collaboration |
 
-[Error] mic0: Create failed for /etc/ssh/rsa1 keys: Unknown error 255
+---
 
-Proceed to start the MPSS service manually.
+## License
 
-   **Step 8: Start and Enable MPSS Service**
+- All future code contributions will follow the **GPLv2** license (matching kernel requirements).
+- Documentation and educational materials will be published under **Creative Commons Attribution 4.0 (CC BY 4.0)**.
 
-```
-systemctl start mpss
-systemctl enable mpss
-```
+---
 
-This starts the Manycore Platform Software Stack (MPSS) and ensures it runs at boot.
+## Call to Action: Contributors Wanted!
 
-**Building the mic.ko Module on AlmaLinux 8.10**  
+This project seeks **kernel developers**, **hardware enthusiasts**, **educational technologists**, and **AI researchers** interested in:
 
-The Intel Xeon Phi 5110P requires the `mic.ko` kernel module to function properly, but since official support for the Manycore Platform Software Stack (MPSS) has been discontinued, manually building and installing this module is necessary. This guide walks through the process of compiling and installing the `mic.ko` module on AlmaLinux 8.10.  
+✅ Open hardware support for legacy accelerators.  
+✅ Affordable AI infrastructure for education.  
+✅ Real-world kernel driver development for EL9.  
+✅ Collaboration on AI tools tailored for **basic education in Peru** and beyond.
 
-  **Step 1: Preparing the System**  
+---
 
-Before beginning, ensure that your system has the necessary development tools installed. Start by installing the required packages:  
+## References
 
-```
-dnf groupinstall -y "Development Tools"
+- Intel MPSS Documentation (Archived)
+- Keijser, J.J. (2024). Adapting MPSS for CentOS 8. GitHub Repository: [https://github.com/jjkeijser/mpss](https://github.com/jjkeijser/mpss)
+- AlmaLinux 9 Release Notes: [https://wiki.almalinux.org/release-notes/9.0.html](https://wiki.almalinux.org/release-notes/9.0.html)
 
-dnf install -y rpm-build kernel-devel-$(uname -r) kernel-headers-$(uname -r) elfutils-libelf-devel gcc make dnf-utils
+---
+
+## Repository Structure (Planned)
+
+```plaintext
+/
+├── kernel-module/
+│   ├── mic/
+│   ├── build-scripts/
+│   └── patches/
+├── user-space/
+│   ├── libmicmgmt/
+│   ├── libscif/
+│   ├── mpss-daemon/
+│   └── tools/
+├── docs/
+│   ├── installation.md
+│   ├── configuration.md
+│   ├── compatibility.md
+│   └── case-studies/
+├── packaging/
+│   ├── RPM SPECS/
+│   ├── SRPM/
+│   └── repos/
+└── README.md  (this file)
 ```
 
-This installs essential compilers, kernel development files, and utilities required to build kernel modules.  
+---
 
-   **Step 2: Setting Up the RPM Build Environment**  
+**Together, let’s bring Xeon Phi back to life — for education, for AI, and for open hardware innovation.**
 
-Next, create the necessary directory structure for building RPM packages:  
+---
 
-```mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}```
-
-This ensures that all necessary folders exist before proceeding with the RPM build process.  
-
-   **Step 3: Installing the Source RPM**  
-
-Now, install the MPSS source RPM package:  
-
-```rpm -ivh https://github.com/ruribe17/Xeon-Phi-5110P-KNC-Drivers-Utilities-for-AlmaLinux-8.1/releases/download/v0.1.0-alpha/mpss-modules-3.8.6-8.src.rpm```
-
-This extracts the source files into the `rpmbuild` directory, which will be used for compiling the module.  
-
-   **Step 4: Editing the SPEC File**  
-
-Navigate to the `SPECS` directory and open the SPEC file for editing:  
-
-```
-cd ~/rpmbuild/SPECS
-vi mpss-modules-3.8.6-rhel85.spec
-```
-
-In this step, verify that the kernel version matches the one currently running on your system. You can check your kernel version with:  
-
-```uname -r```
-
-For example, if the output is `4.18.0-553.40.1.el8_10.x86_64`, update the SPEC file accordingly.  
-
-   **Step 5: Applying Kernel Patch**  
-
-Copy the appropriate kernel patch file to the `SOURCES` directory:  
-
-```cp /root/rpmbuild/SOURCES/mpss-modules-4.18.0-553.37.1.el8_10.x86_64.patch /root/rpmbuild/SOURCES/mpss-modules-4.18.0-553.40.1.el8_10.x86_64.patch```
-
-This ensures that the patch aligns with the kernel version currently installed.  
-
-   **Step 6: Building the RPM Package**  
-
-Once the necessary modifications are in place, build the RPM package with:  
-
-```rpmbuild -bb mpss-modules-3.8.6-rhel85.spec```
-
-This command compiles the kernel module and packages it into an installable RPM.  
-
-   **Conclusion**  
-
-By following these steps, you have successfully compiled, installed, and loaded the `mic.ko` kernel module on AlmaLinux 8.10. This process enables the continued use of Xeon Phi 5110P hardware despite the discontinuation of official support. With this module in place, you can now explore AI and HPC applications using this hardware.
-
-**References**
-
-AlmaLinux. (2025). Get AlmaLinux. AlmaLinux Foundation. Recuperado el 26 de febrero de 2025, de https://almalinux.org/get-almalinux/
-
-Keijser, J. J. (2023). MPSS for Xeon Phi 5110P KNC drivers and utilities (v3.8.6). GitHub. https://github.com/jjkeijser/mpss
-
-Keijser, J. J. (2022). Xeon Phi MPSS on CentOS 8. Retrieved from https://jjkeijser.github.io/mpss/xeon-phi-mpss-centos8.html
-
-xdsopl. (2015). mpss-modules [GitHub repository]. GitHub. Retrieved February 26, 2025, from https://github.com/xdsopl/mpss-modules
+Would you like me to generate the actual **README.md** file or the full **GitHub repository template**?
