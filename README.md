@@ -1,7 +1,3 @@
-Absolutely! Here’s a **formal proposal** tailored for publication on **GitHub** — designed to be **persuasive**, **informative**, and to attract interest from developers, educational institutions, and open-source enthusiasts. This version is suitable as a **README.md** or **project proposal document** to kick off a GitHub repository:
-
----
-
 # Proposal: Developing Xeon Phi 5110P Support for AlmaLinux 9 (Kernel 5.14)
 
 ## Introduction
@@ -159,7 +155,3 @@ This project seeks **kernel developers**, **hardware enthusiasts**, **educationa
 ---
 
 **Together, let’s bring Xeon Phi back to life — for education, for AI, and for open hardware innovation.**
-
----
-
-Would you like me to generate the actual **README.md** file or the full **GitHub repository template**?
